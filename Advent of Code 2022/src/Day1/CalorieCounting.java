@@ -2,19 +2,20 @@ package Day1;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
 
 public class CalorieCounting
 {
     public static void main(String[] args) throws FileNotFoundException
     {
-        File file = new File("Day1/input.txt");
+        File file = new File("src/Day1/input.txt");
         Scanner scanner = new Scanner(file);
         int sum = 0;
-        int maxSum = Integer.MIN_VALUE;
-        int i = 0;
-        int elfCount = i;
-        String line = "";
+        String line;
+        List<Integer> sums = new LinkedList<>();
 
         while(scanner.hasNextLine())
         {
@@ -22,15 +23,15 @@ public class CalorieCounting
             {
                 sum += Integer.parseInt(line);
             }
-            if (sum > maxSum)
-            {
-                maxSum = sum;
-                elfCount = i;
-            }
-            i++;
+            sums.add(sum);
             sum = 0;
         }
 
-        System.out.printf("Max calories: %d on elf number %d", maxSum, elfCount);
+        sums = sums.stream()
+                        .sorted(Comparator.reverseOrder())
+                        .toList();
+
+        System.out.printf("Max calories: %d\n", sums.get(0));
+        System.out.printf("Top 3 max calories sum: %d", sums.get(0) + sums.get(1) + sums.get(2));
     }
 }
